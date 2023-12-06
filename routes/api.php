@@ -2,6 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\FaqCategoryController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +23,25 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+Route::resource('testimonials', TestimonialController::class);
+
+
+Route::resource('faq-categories', FaqCategoryController::class);
+
+
+
+
+Route::resource('faqs', FaqController::class);
+
+
+
+Route::resource('product-categories', ProductCategoryController::class);
+
+
+
+
+
+Route::resource('products', ProductController::class);
