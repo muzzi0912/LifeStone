@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -14,16 +15,11 @@ class ProductController extends Controller
      */
     public function index()
     {
+        // Retrieve all products with associated categories
         $products = Product::with('category')->get();
-        return wt_api_json_success($products, null, 'Products retrieved successfully');
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // Use the API helper for response
+        return wt_api_json_success($products, null, 'Products retrieved successfully');
     }
 
     /**
@@ -55,6 +51,7 @@ class ProductController extends Controller
 
         $product = Product::create($productData);
 
+        // Use the API helper for response
         return wt_api_json_success($product, null, 'Product created successfully');
     }
 
@@ -63,21 +60,16 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
+        // Retrieve the product based on the provided $id
         $product = Product::find($id);
 
+        // Check if the product was found
         if (!$product) {
             return wt_api_json_error('Product not found', 404);
         }
 
+        // Use the API helper for response
         return wt_api_json_success($product, null, 'Product retrieved successfully');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -85,14 +77,18 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Find the product by ID
         $product = Product::find($id);
 
+        // Check if the product was found
         if (!$product) {
             return wt_api_json_error('Product not found', 404);
         }
 
+        // Update the product
         $product->update($request->all());
 
+        // Use the API helper for response
         return wt_api_json_success('Product updated successfully');
     }
 
@@ -108,12 +104,6 @@ class ProductController extends Controller
         if (!$product) {
             return wt_api_json_error('Product not found', 404);
         }
-
-        // // Delete associated images from storage
-        // $images = json_decode($product->images, true);
-        // foreach ($images as $image) {
-        //     Storage::disk('public')->delete($image);
-        // }
 
         // Delete the product
         $product->delete();

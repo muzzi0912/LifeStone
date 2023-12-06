@@ -14,16 +14,11 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
+        // Retrieve all product categories from the database
         $categories = ProductCategory::all();
-        return wt_api_json_success($categories, null, 'Product categories retrieved successfully');
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        // Use the API helper for response
+        return wt_api_json_success($categories, null, 'Product categories retrieved successfully');
     }
 
     /**
@@ -31,7 +26,10 @@ class ProductCategoryController extends Controller
      */
     public function store(ProductCategoryRequest $request)
     {
+        // Validation passed, create a new product category
         $category = ProductCategory::create($request->validated());
+
+        // Use the API helper for response
         return wt_api_json_success($category, null, 'Product category created successfully');
     }
 
@@ -40,21 +38,16 @@ class ProductCategoryController extends Controller
      */
     public function show(string $id)
     {
+        // Retrieve the product category based on the provided $id
         $category = ProductCategory::find($id);
 
+        // Check if the product category was found
         if (!$category) {
             return wt_api_json_error('Product category not found', 404);
         }
 
+        // Use the API helper for response
         return wt_api_json_success($category, null, 'Product category retrieved successfully');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -62,14 +55,19 @@ class ProductCategoryController extends Controller
      */
     public function update(ProductCategoryRequest $request, string $id)
     {
+        // Find the product category by ID
         $category = ProductCategory::find($id);
 
+        // Check if the product category was found
         if (!$category) {
             return wt_api_json_error('Product category not found', 404);
         }
 
         try {
+            // Update the product category
             $category->update($request->validated());
+
+            // Use the API helper for response
             return wt_api_json_success($category, null, 'Product category updated successfully');
         } catch (\Exception $e) {
             return wt_api_json_error($e->getMessage(), 500, 'An error occurred while updating the product category');
@@ -81,14 +79,19 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
+        // Find the product category based on the provided $id
         $category = ProductCategory::find($id);
 
+        // Check if the product category was found
         if (!$category) {
             return wt_api_json_error('Product category not found', 404);
         }
 
         try {
+            // Delete the product category
             $category->delete();
+
+            // Use the API helper for response
             return wt_api_json_success(null, null, 'Product category deleted successfully');
         } catch (\Exception $e) {
             return wt_api_json_error($e->getMessage(), 500, 'An error occurred while deleting the product category');

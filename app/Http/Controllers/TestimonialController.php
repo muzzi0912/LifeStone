@@ -7,7 +7,6 @@ use App\Http\Requests\TestimonialRequest;
 use Illuminate\Http\Request;
 use App\Models\Testimonial;
 
-
 class TestimonialController extends Controller
 {
     /**
@@ -46,7 +45,6 @@ class TestimonialController extends Controller
             return wt_api_json_error($e->getMessage(), 500, 'An error occurred while creating the testimonial');
         }
     }
-
 
     /**
      * Display the specified resource.

@@ -19,19 +19,14 @@ class FaqController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(FaqRequest $request)
     {
+        // Validation passed, create a new FAQ
         $faq = Faq::create($request->validated());
+
+        // Use the API helper for response
         return wt_api_json_success($faq, null, 'FAQ created successfully');
     }
 
@@ -40,21 +35,16 @@ class FaqController extends Controller
      */
     public function show(string $id)
     {
+        // Retrieve the FAQ based on the provided $id
         $faq = Faq::with('category')->find($id);
 
+        // Check if the FAQ was found
         if (!$faq) {
-            return wt_api_json_error("FAQ not found", 404);
+            return wt_api_json_error('FAQ not found', 404);
         }
 
+        // Use the API helper for response
         return wt_api_json_success($faq, null, 'FAQ retrieved successfully');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -63,17 +53,17 @@ class FaqController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $faq = faq::find($id); // Find the faq by ID
+            $faq = Faq::find($id); // Find the FAQ by ID
 
             if (!$faq) {
-                return wt_api_json_error('faq not found', 404);
+                return wt_api_json_error('FAQ not found', 404);
             }
 
-            $faq->update($request->all()); // Update the faq
+            $faq->update($request->all()); // Update the FAQ
 
-            return wt_api_json_success('faq updated successfully');
+            return wt_api_json_success('FAQ updated successfully');
         } catch (\Exception $e) {
-            return wt_api_json_error($e->getMessage(), 500, 'An error occurred while updating the faq');
+            return wt_api_json_error($e->getMessage(), 500, 'An error occurred while updating the FAQ');
         }
     }
 
@@ -82,14 +72,19 @@ class FaqController extends Controller
      */
     public function destroy(string $id)
     {
+        // Find the FAQ based on the provided $id
         $faq = Faq::find($id);
 
+        // Check if the FAQ was found
         if (!$faq) {
             return wt_api_json_error('FAQ not found', 404);
         }
 
         try {
+            // Delete the FAQ
             $faq->delete();
+
+            // Use the API helper for response
             return wt_api_json_success(null, null, 'FAQ deleted successfully');
         } catch (\Exception $e) {
             return wt_api_json_error($e->getMessage(), 500, 'An error occurred while deleting the FAQ');
