@@ -87,7 +87,7 @@ class TestimonialController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
+    {                   
         $testimonial = Testimonial::find($id);
 
         if (!$testimonial) {
