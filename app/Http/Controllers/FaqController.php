@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FaqRequest;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
+
 use App\Models\Faq;
 
 class FaqController extends Controller
@@ -12,9 +14,18 @@ class FaqController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $faqs = Faq::with('category')->get();
+        // Retrieve the selected category ID from the request
+        $categoryId = $request->input('category_id');
+
+        // Query to get FAQs with the selected category
+        $faqs = Faq::when($categoryId, function (Builder $query, $categoryId) {
+            $query->where('category_id', $categoryId);
+        })
+            ->with('category')
+            ->get();
+
         return wt_api_json_success($faqs, null, 'FAQs retrieved successfully');
     }
 

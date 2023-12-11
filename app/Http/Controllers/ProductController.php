@@ -6,17 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Retrieve all products with associated categories
-        $products = Product::with('category')->get();
+        // Retrieve the selected category ID from the request
+        $categoryId = $request->input('category_id');
+
+        // Query to get products with the selected category
+        $products = Product::when($categoryId, function ($query, $categoryId) {
+            $query->where('category_id', $categoryId);
+        })
+            ->with('category')
+            ->get();
 
         // Use the API helper for response
         return wt_api_json_success($products, null, 'Products retrieved successfully');
