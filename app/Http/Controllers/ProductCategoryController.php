@@ -53,7 +53,7 @@ class ProductCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductCategoryRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         // Find the product category by ID
         $category = ProductCategory::find($id);
@@ -64,8 +64,8 @@ class ProductCategoryController extends Controller
         }
 
         try {
-            // Update the product category
-            $category->update($request->validated());
+            // Update the product category with all data from the request
+            $category->update($request->all());
 
             // Use the API helper for response
             return wt_api_json_success($category, null, 'Product category updated successfully');

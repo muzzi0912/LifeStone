@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\FaqCategoryController;
@@ -7,6 +10,8 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContactQueryController;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +24,10 @@ use App\Http\Controllers\ContactQueryController;
 */
 
 // Authenticated User Route (Example)
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 
 // Testimonials Routes
 Route::resource('testimonials', TestimonialController::class);
@@ -40,3 +46,19 @@ Route::resource('products', ProductController::class);
 
 // Contact Queries Routes
 Route::resource('contact-queries', ContactQueryController::class);
+
+
+
+// Registration
+Route::post('/register', [AuthController::class, 'register']);
+
+// Login
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    // User update
+    Route::put('/user/{id}', [AuthController::class, 'update']);
+});

@@ -10,4 +10,6 @@ class ProductCategory extends Model
     use HasFactory;
 
     protected $fillable = ['category'];
+
+    protected $guarded = ['id'];
 }
