@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContactQueryController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AllUserController;
 
 
 /*
@@ -62,3 +63,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // User update
     Route::put('/user/{id}', [AuthController::class, 'update']);
 });
+
+
+Route::resource('all_users', AllUserController::class);
