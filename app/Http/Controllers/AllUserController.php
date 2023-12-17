@@ -22,14 +22,13 @@ class AllUserController extends Controller
 
     public function userRegister(RegisterRequest $request)
     {
-        // Validation has passed at this point
         $user = AllUser::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_verified' => $request->is_verified, // Assuming 'is_verified' is part of your request
         ]);
 
-        // Use your custom success response helper
         return wt_api_json_success(['user' => $user], null, 'User registered successfully');
     }
 }
