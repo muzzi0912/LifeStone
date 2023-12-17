@@ -9,7 +9,5 @@ class AllUser extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name', 'email', 'password', 'is_verified'
-    ];
+    protected $fillable = ['name', 'email', 'password', 'is_verified'];
 }

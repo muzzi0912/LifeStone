@@ -3,42 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Auth;
+
 use App\Models\AllUser;
+
 use Illuminate\Http\Request;
 
 class AllUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function all_users()
     {
         $allUsers = AllUser::all();
         return response()->json(['data' => $allUsers], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function userRegister(RegisterRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:all_users',
-            'password' => 'required|min:6',
-        ]);
-
+        // Validation has passed at this point
         $user = AllUser::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['data' => $user], 201);
+        // Use your custom success response helper
+        return wt_api_json_success(['user' => $user], null, 'User registered successfully');
     }
 }

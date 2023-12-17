@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\FaqCategoryController;
@@ -12,7 +10,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContactQueryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AllUserController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -30,33 +27,35 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-// Testimonials Routes
-Route::resource('testimonials', TestimonialController::class);
 
-// FAQ Categories Routes
-Route::resource('faq-categories', FaqCategoryController::class);
-
-// FAQs Routes
-Route::resource('faqs', FaqController::class);
-
-// Product Categories Routes
-Route::resource('product-categories', ProductCategoryController::class);
-
-// Products Routes
-Route::resource('products', ProductController::class);
-
-// Contact Queries Routes
-Route::resource('contact-queries', ContactQueryController::class);
-
-
-
-// Registration
+// Admin Registration
 Route::post('/register', [AuthController::class, 'register']);
 
-// Login
+// Admin Login 
 Route::post('/login', [AuthController::class, 'login']);
 
+
+
 Route::middleware('auth:sanctum')->group(function () {
+
+    // Testimonials Routes
+    Route::resource('testimonials', TestimonialController::class);
+
+    // FAQ Categories Routes
+    Route::resource('faq-categories', FaqCategoryController::class);
+
+    // FAQs Routes
+    Route::resource('faqs', FaqController::class);
+
+    // Product Categories Routes
+    Route::resource('product-categories', ProductCategoryController::class);
+
+    // Products Routes
+    Route::resource('products', ProductController::class);
+
+    // Contact Queries Routes
+    Route::resource('contact-queries', ContactQueryController::class);
+
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -65,4 +64,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-Route::resource('all_users', AllUserController::class);
+// All Users Routes
+Route::get('/all_users', [AllUserController::class, 'all_users']);
+Route::post('/user/register', [AllUserController::class, 'userRegister']);

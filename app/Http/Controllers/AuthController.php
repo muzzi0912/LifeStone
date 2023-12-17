@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
         // Use your custom success response helper
-        return wt_api_json_success(['user' => $user], null, 'User registered successfully');
+        return wt_api_json_success(['user' => $user], null, 'Admin registered successfully');
     }
 
     public function login(LoginRequest $request)
