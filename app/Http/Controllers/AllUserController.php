@@ -26,9 +26,19 @@ class AllUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_verified' => $request->is_verified, // Assuming 'is_verified' is part of your request
+            'is_verified' => $request->is_verified,
         ]);
 
-        return wt_api_json_success(['user' => $user], null, 'User registered successfully');
+        // Generate token
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return wt_api_json_success(['user' => $user, 'access_token' => $token], null, 'User registered successfully');
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->tokens()->delete();
+
+        return wt_api_json_success(null, null, 'Logout successful');
     }
 }

@@ -67,3 +67,10 @@ Route::middleware('auth:sanctum')->group(function () {
 // All Users Routes
 Route::get('/all_users', [AllUserController::class, 'all_users']);
 Route::post('/user/register', [AllUserController::class, 'userRegister']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    // ... (existing routes)
+
+    // Logout
+    Route::post('/logout', [AllUserController::class, 'logout']);
+});
