@@ -31,28 +31,25 @@ class TestimonialController extends Controller
             $imagePath = $request->file('client_image')->store('client_images', 'public');
 
             // Handle video upload
-            $videoPath = null;
-            if ($request->hasFile('video_file')) {
-                $videoPath = $request->file('video_file')->store('testimonial_videos', 'public');
-            }
+            $videoPath = $request->hasFile('video_file') ? $request->file('video_file')->store('testimonial_videos', 'public') : null;
 
             // Use validated data from TestimonialRequest
             $validatedData = $request->validated();
 
             // Create a new testimonial
-            $testimonial = new Testimonial();
-            $testimonial->testimonial = $validatedData['testimonial'];
-            $testimonial->client_name = $validatedData['client_name'];
-            $testimonial->client_designation = $validatedData['client_designation'];
-            $testimonial->client_company = $validatedData['client_company'];
-            $testimonial->client_image = $imagePath;
-            $testimonial->facebook_link = $validatedData['facebook_link'] ?? null;
-            $testimonial->instagram_link = $validatedData['instagram_link'] ?? null;
-            $testimonial->twitter_link = $validatedData['twitter_link'] ?? null;
-            $testimonial->linkedin_link = $validatedData['linkedin_link'] ?? null;
-            $testimonial->video_file = $videoPath;
-            $testimonial['is_published'] = $request->input('is_published', false);
-            $testimonial->save();
+            $testimonial = Testimonial::create([
+                'testimonial' => $validatedData['testimonial'],
+                'client_name' => $validatedData['client_name'],
+                'client_designation' => $validatedData['client_designation'],
+                'client_company' => $validatedData['client_company'],
+                'client_image' => $imagePath,
+                'facebook_link' => $validatedData['facebook_link'] ?? null,
+                'instagram_link' => $validatedData['instagram_link'] ?? null,
+                'twitter_link' => $validatedData['twitter_link'] ?? null,
+                'linkedin_link' => $validatedData['linkedin_link'] ?? null,
+                'video_file' => $videoPath,
+                'is_published' => $request->input('is_published', false),
+            ]);
 
             // Use the API helper for response
             return wt_api_json_success($testimonial, null, 'Testimonial created successfully');
@@ -60,6 +57,23 @@ class TestimonialController extends Controller
             // Handle any exceptions that might occur
             return wt_api_json_error($e->getMessage(), 500, 'An error occurred while creating the testimonial');
         }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        // Retrieve the testimonial based on the provided $id
+        $testimonial = Testimonial::find($id);
+
+        // Check if the testimonial was found
+        if (!$testimonial) {
+            return wt_api_json_error("Testimonial not found", 404);
+        }
+
+        // Use the API helper for response
+        return wt_api_json_success($testimonial, null, 'Testimonial retrieved successfully');
     }
 
     /**
