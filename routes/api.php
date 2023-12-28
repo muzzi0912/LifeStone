@@ -35,32 +35,32 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 
+// Testimonials Routes
+Route::resource('testimonials', TestimonialController::class);
+
+// FAQ Categories Routes
+Route::resource('faq-categories', FaqCategoryController::class);
+
+// FAQs Routes
+Route::resource('faqs', FaqController::class);
+
+// Product Categories Routes
+Route::resource('product-categories', ProductCategoryController::class);
+
+// Products Routes
+Route::resource('products', ProductController::class);
+
+// Contact Queries Routes
+Route::resource('contact-queries', ContactQueryController::class);
+
+// Logout
+Route::post('/logout', [AuthController::class, 'logout']);
+
+// User update
+Route::put('/user/{id}', [AuthController::class, 'update']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
-
-    // Testimonials Routes
-    Route::resource('testimonials', TestimonialController::class);
-
-    // FAQ Categories Routes
-    Route::resource('faq-categories', FaqCategoryController::class);
-
-    // FAQs Routes
-    Route::resource('faqs', FaqController::class);
-
-    // Product Categories Routes
-    Route::resource('product-categories', ProductCategoryController::class);
-
-    // Products Routes
-    Route::resource('products', ProductController::class);
-
-    // Contact Queries Routes
-    Route::resource('contact-queries', ContactQueryController::class);
-
-    // Logout
-    Route::post('/logout', [AuthController::class, 'logout']);
-
-    // User update
-    Route::put('/user/{id}', [AuthController::class, 'update']);
 });
 
 

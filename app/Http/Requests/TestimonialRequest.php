@@ -23,10 +23,15 @@ class TestimonialRequest extends FormRequest
     {
         return [
             'testimonial' => 'required',
-            'client_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'client_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'client_name' => 'required',
             'client_designation' => 'required',
             'client_company' => 'required',
+            'facebook_link' => 'nullable|url',
+            'instagram_link' => 'nullable|url',
+            'twitter_link' => 'nullable|url',
+            'linkedin_link' => 'nullable|url',
+            'video_file' => 'nullable|file|mimes:mp4,avi,mov,wmv', // Adjust the mime types as needed
         ];
     }
 }

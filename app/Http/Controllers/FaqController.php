@@ -35,12 +35,17 @@ class FaqController extends Controller
     public function store(FaqRequest $request)
     {
         // Validation passed, create a new FAQ
-        $faq = Faq::create($request->validated());
+        $faqData = $request->validated();
+
+        // Set default value for is_published if not provided
+        $faqData['is_published'] = $request->input('is_published', false);
+
+        $faq = Faq::create($faqData);
 
         // Use the API helper for response
         return wt_api_json_success($faq, null, 'FAQ created successfully');
     }
-
+    
     /**
      * Display the specified resource.
      */

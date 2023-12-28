@@ -18,9 +18,16 @@ return new class extends Migration
             $table->string('client_name');
             $table->string('client_designation');
             $table->string('client_company');
+            $table->string('facebook_link');
+            $table->string('instagram_link');
+            $table->string('twitter_link');
+            $table->string('linkedin_link');
+            $table->string('video_file');
+            $table->boolean('is_published')->default(true);
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

@@ -24,6 +24,7 @@ class FaqRequest extends FormRequest
         return [
             'question' => 'required',
             'answer' => 'required',
+            'is_published' => 'boolean',
             'category_id' => 'required|exists:faq_categories,id',
         ];
     }

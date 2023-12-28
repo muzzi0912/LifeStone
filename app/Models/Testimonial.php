@@ -15,5 +15,11 @@ class Testimonial extends Model
         'client_name',
         'client_designation',
         'client_company',
+        'facebook_link',
+        'instagram_link',
+        'twitter_link',
+        'linkedin_link',
+        'video_file',
+        'is_published',
     ];
 }

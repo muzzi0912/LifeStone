@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('question');
             $table->text('answer');
             $table->unsignedBigInteger('category_id');
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('faq_categories')->onDelete('cascade');

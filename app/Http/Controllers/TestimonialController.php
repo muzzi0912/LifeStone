@@ -30,12 +30,28 @@ class TestimonialController extends Controller
             // Handle image upload
             $imagePath = $request->file('client_image')->store('client_images', 'public');
 
+            // Handle video upload
+            $videoPath = null;
+            if ($request->hasFile('video_file')) {
+                $videoPath = $request->file('video_file')->store('testimonial_videos', 'public');
+            }
+
             // Use validated data from TestimonialRequest
             $validatedData = $request->validated();
 
             // Create a new testimonial
-            $testimonial = new Testimonial($validatedData);
+            $testimonial = new Testimonial();
+            $testimonial->testimonial = $validatedData['testimonial'];
+            $testimonial->client_name = $validatedData['client_name'];
+            $testimonial->client_designation = $validatedData['client_designation'];
+            $testimonial->client_company = $validatedData['client_company'];
             $testimonial->client_image = $imagePath;
+            $testimonial->facebook_link = $validatedData['facebook_link'] ?? null;
+            $testimonial->instagram_link = $validatedData['instagram_link'] ?? null;
+            $testimonial->twitter_link = $validatedData['twitter_link'] ?? null;
+            $testimonial->linkedin_link = $validatedData['linkedin_link'] ?? null;
+            $testimonial->video_file = $videoPath;
+            $testimonial['is_published'] = $request->input('is_published', false);
             $testimonial->save();
 
             // Use the API helper for response
@@ -44,23 +60,6 @@ class TestimonialController extends Controller
             // Handle any exceptions that might occur
             return wt_api_json_error($e->getMessage(), 500, 'An error occurred while creating the testimonial');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        // Retrieve the testimonial based on the provided $id
-        $testimonial = Testimonial::find($id);
-
-        // Check if the testimonial was found
-        if (!$testimonial) {
-            return wt_api_json_error("Testimonial not found", 404);
-        }
-
-        // Use the API helper for response
-        return wt_api_json_success($testimonial, null, 'Testimonial retrieved successfully');
     }
 
     /**
@@ -87,7 +86,7 @@ class TestimonialController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {                   
+    {
         $testimonial = Testimonial::find($id);
 
         if (!$testimonial) {
