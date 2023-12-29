@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('short_description');
             $table->text('long_description')->nullable();
             $table->json('images')->nullable();
+            $table->boolean('is_published')->default(false);
             $table->timestamps();
         });
     }

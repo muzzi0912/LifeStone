@@ -54,7 +54,9 @@ class ProductController extends Controller
             'short_description' => $validatedData['short_description'],
             'long_description' => $validatedData['long_description'],
             'images' => $images,
+            'is_published' => $request->input('is_published', false), // Default to false if not provided
         ];
+
 
         $product = Product::create($productData);
 
