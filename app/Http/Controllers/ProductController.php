@@ -13,22 +13,25 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request )
+    public function index(Request $request)
     {
         // Retrieve the selected category ID from the request
         $categoryId = $request->input('category_id');
 
-        // Query to get product with the selected category
-        $product = Product::when($categoryId, function (Builder $query, $categoryId) {
-            $query->where('category_id', $categoryId);
+        // Query to get products with the selected category
+        $products = Product::when($categoryId, function (Builder $query) use ($categoryId) {
+            $query->whereHas('categories', function ($query) use ($categoryId) {
+                $query->where('product_categories.id', $categoryId);
+            });
         })
-            ->with('category')
+            ->with('categories')
             ->get();
 
-        return wt_api_json_success($product, null, 'product retrieved successfully');
+        return wt_api_json_success($products, null, 'Products retrieved successfully');
     }
 
-    
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -75,15 +78,15 @@ class ProductController extends Controller
     public function show(string $id)
     {
         // Retrieve the product based on the provided $id
-        $product = Product::find($id);
+        $product = Product::with('categories')->find($id);
 
         // Check if the product was found
         if (!$product) {
-            return wt_api_json_error('Product not found', 404);
+            return wt_api_json_error('product not found', 404);
         }
 
         // Use the API helper for response
-        return wt_api_json_success($product, null, 'Product retrieved successfully');
+        return wt_api_json_success($product, null, 'product retrieved successfully');
     }
 
     /**
