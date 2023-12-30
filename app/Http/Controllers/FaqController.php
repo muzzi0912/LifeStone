@@ -22,7 +22,7 @@ class FaqController extends Controller
         // Query to get FAQs with the selected category
         $faqs = Faq::when($categoryId, function (Builder $query, $categoryId) {
             $query->where('category_id', $categoryId);
-        })
+        }) 
             ->with('category')
             ->get();
 

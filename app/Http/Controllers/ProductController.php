@@ -6,29 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request )
     {
         // Retrieve the selected category ID from the request
         $categoryId = $request->input('category_id');
 
-        // Query to get products with the selected category
-        $products = Product::when($categoryId, function ($query, $categoryId) {
+        // Query to get product with the selected category
+        $product = Product::when($categoryId, function (Builder $query, $categoryId) {
             $query->where('category_id', $categoryId);
         })
             ->with('category')
             ->get();
 
-        // Use the API helper for response
-        return wt_api_json_success($products, null, 'Products retrieved successfully');
+        return wt_api_json_success($product, null, 'product retrieved successfully');
     }
 
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -118,6 +118,9 @@ class ProductController extends Controller
         if (!$product) {
             return wt_api_json_error('Product not found', 404);
         }
+
+        // Remove relationships in the pivot table
+        $product->categories()->detach();
 
         // Delete the product
         $product->delete();
