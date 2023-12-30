@@ -24,13 +24,13 @@ class ProductRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'slogan' => 'nullable|string|max:255',
-            'category_id' => 'required|exists:product_categories,id',
+            'category_ids' => 'required|array',
+            'category_ids.*' => 'exists:product_categories,id',
             'short_description' => 'required|string',
             'long_description' => 'nullable|string',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'is_published' => 'boolean',
-
         ];
     }
 }

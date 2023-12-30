@@ -32,6 +32,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // In the ProductController
     public function store(ProductRequest $request)
     {
         // Validate the request
@@ -50,19 +51,23 @@ class ProductController extends Controller
         $productData = [
             'name' => $validatedData['name'],
             'slogan' => $validatedData['slogan'],
-            'category_id' => $validatedData['category_id'],
             'short_description' => $validatedData['short_description'],
             'long_description' => $validatedData['long_description'],
             'images' => $images,
             'is_published' => $request->input('is_published', false), // Default to false if not provided
         ];
 
-
         $product = Product::create($productData);
+
+        // Attach categories to the product using a loop
+        foreach ($validatedData['category_ids'] as $categoryId) {
+            $product->categories()->attach($categoryId);
+        }
 
         // Use the API helper for response
         return wt_api_json_success($product, null, 'Product created successfully');
     }
+
 
     /**
      * Display the specified resource.

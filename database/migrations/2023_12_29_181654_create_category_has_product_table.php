@@ -11,23 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('category_has_product', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slogan')->nullable();
-            $table->text('short_description');
-            $table->text('long_description')->nullable();
-            $table->json('images')->nullable();
-            $table->boolean('is_published')->default(false);
+            $table->foreignId('product_id')->constrained();
+            $table->foreignId('product_category_id')->constrained('product_categories');
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('category_has_product');
     }
 };
