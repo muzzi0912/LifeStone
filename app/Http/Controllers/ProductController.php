@@ -92,22 +92,37 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductRequest $request, Product $product)
     {
-        // Find the product by ID
-        $product = Product::find($id);
+        // Validate the request
+        $validatedData = $request->validated();
 
-        // Check if the product was found
-        if (!$product) {
-            return wt_api_json_error('Product not found', 404);
+        // Handle image upload and update paths in the database
+        $images = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('product_images', 'public');
+                $images[] = $path;
+            }
         }
 
-        // Update the product
-        $product->update($request->all());
+        // Update the product data
+        $product->update([
+            'name' => $validatedData['name'],
+            'slogan' => $validatedData['slogan'],
+            'short_description' => $validatedData['short_description'],
+            'long_description' => $validatedData['long_description'],
+            'images' => $images,
+            'is_published' => $request->input('is_published', false),
+        ]);
+
+        // Sync categories for the product
+        $product->categories()->sync($validatedData['category_ids']);
 
         // Use the API helper for response
-        return wt_api_json_success('Product updated successfully');
+        return wt_api_json_success($product, null, 'Product updated successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.
