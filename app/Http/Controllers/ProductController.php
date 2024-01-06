@@ -123,7 +123,6 @@ class ProductController extends Controller
         return wt_api_json_success($product, null, 'Product updated successfully');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
