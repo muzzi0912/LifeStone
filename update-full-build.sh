@@ -92,7 +92,7 @@ echo "
 
 Build complete! moving back to backend...
 "
-cd ../Lifestone-portal
+cd ../Lifestone-Portal
 
 echo "
 
