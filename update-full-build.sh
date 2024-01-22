@@ -62,3 +62,56 @@ echo "
 
 FINISHED!!!
 "
+
+
+
+
+
+
+
+
+echo "
+
+Now moving to portal...
+"
+cd ../Life-Stone-Portal
+
+echo "
+
+Updating ERP frontend from git repo...
+"
+git pull
+
+echo "
+
+Building distribution for live server: lifeStonePortalLive...
+"
+npm run build-lifeStonePortalLive
+
+echo "
+
+Build complete! moving back to backend...
+"
+cd ../Lifestone-portal
+
+echo "
+
+Removing old distribution files...
+"
+rm -rf static
+rm index.html
+rm asset-manifest.json
+rm service-worker.js
+rm precache-*.js
+cd ..
+
+echo "
+
+Copying new distribution files...
+"
+cp -a ../Life-Stone-Website/build/. ./
+
+echo "
+
+FINISHED!!!
+"
