@@ -109,7 +109,7 @@ echo "
 
 Copying new distribution files...
 "
-cp -a ../Life-Stone-Website/build/. ./
+cp -a ../Life-Stone-Portal/build/. ./public/
 
 echo "
 
