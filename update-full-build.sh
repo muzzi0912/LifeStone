@@ -86,7 +86,7 @@ echo "
 
 Building distribution for live server: lifeStonePortalLive...
 "
-npm run build-lifeStonePortalLive
+npm run build
 
 npm run export
 
