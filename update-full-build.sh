@@ -86,30 +86,30 @@ echo "
 
 Building distribution for live server: lifeStonePortalLive...
 "
-npm run build-lifeStonePortalLive
+npm run build
 
-echo "
+npm run export
 
-Build complete! moving back to backend...
-"
-cd ../Lifestone-Portal
+echo "Exporting the static pages"
 
-echo "
+# cd ../Lifestone-Portal
 
-Removing old distribution files...
-"
-rm -rf static
-rm index.html
-rm asset-manifest.json
-rm service-worker.js
-rm precache-*.js
-cd ..
+# echo "
 
-echo "
+# Removing old distribution files...
+# "
+# rm -rf static
+# rm index.html
+# rm asset-manifest.json
+# rm service-worker.js
+# rm precache-*.js
+# cd ..
 
-Copying new distribution files...
-"
-cp -a ../Life-Stone-Portal/build/. ./public/
+# echo "
+
+# Copying new distribution files...
+# "
+# cp -a ../Life-Stone-Portal/out/. ./public/
 
 echo "
 
